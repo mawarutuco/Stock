@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>股票</title>
+    <title>股票手續費計算</title>
 
     <!-- React -->
     <script
@@ -32,9 +32,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- sweataler2 -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style></style>
   </head>
   <body>
@@ -50,8 +47,8 @@
 
         const buyThousand = Number(buyPrice) * 1000 * quantity;
         const sellThousand = Number(sellPrice) * 1000 * quantity;
-        const buyFee = Math.round(buyThousand * 0.001425 * quantity);
-        const sellFee = Math.round(sellThousand * 0.004425 * quantity);
+        const buyFee = Math.round(buyThousand * 0.001425);
+        const sellFee = Math.round(sellThousand * 0.004425);
         const totalFee = buyFee + sellFee;
         const spread = sellThousand - buyThousand;
         const earn = spread - totalFee;
@@ -65,7 +62,7 @@
         return (
           <div className="container">
             <MyInputGroup
-              text="張數"
+              text="股票張數"
               inputValue={quantity}
               onChangeEvent={(e) => setQuantity(e.target.value)}
             />
@@ -74,17 +71,17 @@
               inputValue={buyPrice}
               onChangeEvent={(e) => setBuyPrice(e.target.value)}
             />
-            <h1>買進手續費：{buyFee}</h1>
+            <h1>買進手續費：{buyFee}元</h1>
             <MyInputGroup
               text="賣出價格(千元)"
               inputValue={sellPrice}
               onChangeEvent={(e) => setSellPrice(e.target.value)}
             />
-            <h1>賣出手續費：{sellFee}</h1>
-            <hr/>
-            <h1>總手續費：{totalFee}</h1>
+            <h1>賣出手續費：{sellFee}元</h1>
+            <hr />
+            <h1>總手續費：{totalFee}元</h1>
             <h1>淨賺：{earn}元</h1>
-            <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-center align-items-center m-5">
               <MyBtn text="歸0" doClick={reset} />
             </div>
           </div>
@@ -105,11 +102,7 @@
       //     Number(earn)}
       // </h1>
 
-      const MyBtn = ({
-        text,
-        doClick,
-        btnClass = "btn btn-lg btn-danger",
-      }) => {
+      const MyBtn = ({ text, doClick, btnClass = "btn btn-lg btn-danger" }) => {
         return (
           <button className={btnClass} onClick={doClick}>
             {text}
