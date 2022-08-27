@@ -44,40 +44,48 @@
       const { useState, useEffect } = React;
 
       function App() {
+        const [quantity, setQuantity] = useState(1);
         const [buyPrice, setBuyPrice] = useState("");
         const [sellPrice, setSellPrice] = useState("");
 
-        let buyThousand = Number(buyPrice) * 1000;
-        let sellThousand = Number(sellPrice) * 1000;
-        let buyFee = Math.round(buyThousand * 0.001425);
-        let sellFee = Math.round(sellThousand * 0.004425);
+        let buyThousand = Number(buyPrice) * 1000 * quantity;
+        let sellThousand = Number(sellPrice) * 1000 * quantity;
+        let buyFee = Math.round(buyThousand * 0.001425 * quantity);
+        let sellFee = Math.round(sellThousand * 0.004425 * quantity);
         let totalFee = buyFee + sellFee;
         let spread = sellThousand - buyThousand;
+        let earn = spread - totalFee;
 
         const reset = () => {
           setBuyPrice("");
           setSellPrice("");
-          //   setEarn("");
+          setQuantity(1);
         };
 
         return (
           <div className="container">
             <MyInputGroup
-              text="買進(千)"
+              text="張數"
+              inputValue={quantity}
+              onChangeEvent={(e) => setQuantity(e.target.value)}
+            />
+            <MyInputGroup
+              text="買進價格(千元)"
               inputValue={buyPrice}
               onChangeEvent={(e) => setBuyPrice(e.target.value)}
             />
             <h1>買進手續費：{buyFee}</h1>
             <MyInputGroup
-              text="賣出(千)"
+              text="賣出價格(千元)"
               inputValue={sellPrice}
               onChangeEvent={(e) => setSellPrice(e.target.value)}
             />
             <h1>賣出手續費：{sellFee}</h1>
+            <hr/>
             <h1>總手續費：{totalFee}</h1>
-            <h1>淨賺：{spread - totalFee}</h1>
+            <h1>淨賺：{earn}元</h1>
             <div className="d-flex justify-content-center align-items-center">
-              <MyBtn text="規0" doClick={reset} />
+              <MyBtn text="歸0" doClick={reset} />
             </div>
           </div>
         );
@@ -100,7 +108,7 @@
       const MyBtn = ({
         text,
         doClick,
-        btnClass = "btn btn-lg btn-primary",
+        btnClass = "btn btn-lg btn-danger",
       }) => {
         return (
           <button className={btnClass} onClick={doClick}>
@@ -138,6 +146,7 @@
           <div size="lg" className={componentClass}>
             <span className="input-group-text">{text}</span>
             <input
+              type="number"
               className="form-control"
               value={inputValue}
               onChange={onChangeEvent}
@@ -145,7 +154,6 @@
           </div>
         );
       };
-      
 
       const MyRadio = ({ arr }) => {
         return (
