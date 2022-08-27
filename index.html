@@ -48,13 +48,13 @@
         const [buyPrice, setBuyPrice] = useState("");
         const [sellPrice, setSellPrice] = useState("");
 
-        let buyThousand = Number(buyPrice) * 1000 * quantity;
-        let sellThousand = Number(sellPrice) * 1000 * quantity;
-        let buyFee = Math.round(buyThousand * 0.001425 * quantity);
-        let sellFee = Math.round(sellThousand * 0.004425 * quantity);
-        let totalFee = buyFee + sellFee;
-        let spread = sellThousand - buyThousand;
-        let earn = spread - totalFee;
+        const buyThousand = Number(buyPrice) * 1000 * quantity;
+        const sellThousand = Number(sellPrice) * 1000 * quantity;
+        const buyFee = Math.round(buyThousand * 0.001425 * quantity);
+        const sellFee = Math.round(sellThousand * 0.004425 * quantity);
+        const totalFee = buyFee + sellFee;
+        const spread = sellThousand - buyThousand;
+        const earn = spread - totalFee;
 
         const reset = () => {
           setBuyPrice("");
