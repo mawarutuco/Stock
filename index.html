@@ -81,9 +81,22 @@
             <hr />
             <h1>總手續費：{totalFee}元</h1>
             <h1>淨賺：{earn}元</h1>
-            <div className="d-flex justify-content-center align-items-center m-5">
-              <MyBtn text="歸0" doClick={reset} />
+            <div className="d-flex justify-content-center align-items-center m-3">
+              <MyBtn
+                text="買進價格、賣出價格欄位清空"
+                doClick={reset}
+                btnClass="btn-danger"
+              />
             </div>
+            <hr />
+            <h4>使用方法：</h4>
+            <ul className="border">
+              <li>買進價格(千元)、賣出價格(千元)輸入數字</li>
+              <li>
+                <b>輸入60 即為 60萬新台幣</b>
+              </li>
+              <li>輸入後自動換算手續費及淨賺</li>
+            </ul>
           </div>
         );
       }
@@ -102,9 +115,9 @@
       //     Number(earn)}
       // </h1>
 
-      const MyBtn = ({ text, doClick, btnClass = "btn btn-lg btn-danger" }) => {
+      const MyBtn = ({ text, doClick, btnClass = "btn-primary" }) => {
         return (
-          <button className={btnClass} onClick={doClick}>
+          <button className={"btn btn-lg " + btnClass} onClick={doClick}>
             {text}
           </button>
         );
@@ -133,13 +146,14 @@
         text,
         inputValue,
         onChangeEvent,
+        inputType = "number",
         componentClass = "my-3 input-group input-group-lg",
       }) => {
         return (
           <div size="lg" className={componentClass}>
             <span className="input-group-text">{text}</span>
             <input
-              type="number"
+              type={inputType}
               className="form-control"
               value={inputValue}
               onChange={onChangeEvent}
