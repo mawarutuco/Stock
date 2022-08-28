@@ -44,14 +44,23 @@
         const [quantity, setQuantity] = useState(1);
         const [buyPrice, setBuyPrice] = useState("");
         const [sellPrice, setSellPrice] = useState("");
+        const [percent, setPercent] = useState(2);
+        const [show, setShow] = useState(false);
 
-        const buyThousand = Number(buyPrice) * 1000 * quantity;
-        const sellThousand = Number(sellPrice) * 1000 * quantity;
-        const buyFee = Math.round(buyThousand * 0.001425);
-        const sellFee = Math.round(sellThousand * 0.004425);
-        const totalFee = buyFee + sellFee;
+        const buyFee = 0.001425;
+        const sellFee = 0.004425;
+        const buyThousand = buyPrice * 1000 * quantity;
+        const sellThousand = sellPrice * 1000 * quantity;
+        const buyFeeResult = Math.round(buyThousand * buyFee);
+        const sellFeeResult = Math.round(sellThousand * sellFee);
+        const totalFee = buyFeeResult + sellFeeResult;
         const spread = sellThousand - buyThousand;
         const earn = spread - totalFee;
+        const buy2percent = buyThousand * (1 + percent / 100);
+        const buy2percentEarn =
+          buyThousand * (percent / 100) -
+          buyFeeResult -
+          Math.round(buy2percent * sellFee);
 
         const reset = () => {
           setBuyPrice("");
@@ -71,16 +80,18 @@
               inputValue={buyPrice}
               onChangeEvent={(e) => setBuyPrice(e.target.value)}
             />
-            <h1>買進手續費：{buyFee}元</h1>
+            {buyPrice ? <h1>買進手續費：{buyFeeResult}元</h1> : ""}
+
             <MyInputGroup
               text="賣出價格(千元)"
               inputValue={sellPrice}
               onChangeEvent={(e) => setSellPrice(e.target.value)}
             />
-            <h1>賣出手續費：{sellFee}元</h1>
+            {sellPrice ? <h1>賣出手續費：{sellFeeResult}元</h1> : ""}
+
             <hr />
-            <h1>總手續費：{totalFee}元</h1>
-            <h1>淨賺：{earn}元</h1>
+            {sellPrice & buyPrice ? <h1>總手續費：{totalFee}元</h1> : ""}
+            {sellPrice ? <h1>淨賺：{earn}元</h1> : ""}
             <div className="d-flex justify-content-center align-items-center m-3">
               <MyBtn
                 text="買進價格、賣出價格欄位清空"
@@ -88,6 +99,24 @@
                 btnClass="btn-danger"
               />
             </div>
+            <hr />
+
+            <MySwitch text="換算%數" doChange={() => setShow((pre) => !pre)} />
+            {show && (
+              <div>
+                <MyInputGroup
+                  reverse={true}
+                  text="%"
+                  inputValue={percent}
+                  onChangeEvent={(e) => setPercent(e.target.value)}
+                />
+                <h1>
+                  買進價格{percent}%的賣點：{buy2percent / 1000}
+                </h1>
+                <h1>賣掉淨賺：{buy2percentEarn}</h1>
+              </div>
+            )}
+
             <hr />
             <div className="alert alert-primary">
               <h4>使用說明：</h4>
@@ -101,19 +130,21 @@
         );
       }
 
-      // const [earn, setEarn] = useState("");
-      //   <MyInputGroup
-      //   text="希望賺多少"
-      //   inputValue={earn}
-      //   onChangeEvent={(e) => setEarn(e.target.value)}
-      // />
-      // <h1>
-      //   最低賣點：
-      //   {buyThousand +
-      //     buyFee +
-      //     (buyThousand + Number(earn)) * 0.004425 +
-      //     Number(earn)}
-      // </h1>
+      const MySwitch = ({ text, doChange }) => {
+        return (
+          <h1 class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id={text}
+              onChange={doChange}
+            />
+            <label class="form-check-label" for={text}>
+              {text}
+            </label>
+          </h1>
+        );
+      };
 
       const MyBtn = ({ text, doClick, btnClass = "btn-primary" }) => {
         return (
@@ -123,26 +154,8 @@
         );
       };
 
-      const MySelect = ({
-        inputValue,
-        optionData = ["測試1", "測試2"],
-        onChangeEvent,
-        componentClass = "my-3 form-select form-select-lg",
-      }) => {
-        return (
-          <select
-            className={componentClass}
-            value={inputValue}
-            onChange={onChangeEvent}
-          >
-            {optionData.map((n) => (
-              <option key={n}>{n}</option>
-            ))}
-          </select>
-        );
-      };
-
       const MyInputGroup = ({
+        reverse = false,
         text,
         inputValue,
         onChangeEvent,
@@ -151,13 +164,14 @@
       }) => {
         return (
           <div size="lg" className={componentClass}>
-            <span className="input-group-text">{text}</span>
+            {!reverse && <span className="input-group-text">{text}</span>}
             <input
               type={inputType}
               className="form-control"
               value={inputValue}
               onChange={onChangeEvent}
             />
+            {reverse && <span className="input-group-text">{text}</span>}
           </div>
         );
       };
@@ -179,6 +193,25 @@
               </div>
             ))}
           </div>
+        );
+      };
+
+      const MySelect = ({
+        inputValue,
+        optionData = ["測試1", "測試2"],
+        onChangeEvent,
+        componentClass = "my-3 form-select form-select-lg",
+      }) => {
+        return (
+          <select
+            className={componentClass}
+            value={inputValue}
+            onChange={onChangeEvent}
+          >
+            {optionData.map((n) => (
+              <option key={n}>{n}</option>
+            ))}
+          </select>
         );
       };
 
