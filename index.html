@@ -118,13 +118,14 @@
             )}
 
             <hr />
-            <div className="alert alert-primary">
-              <h4>使用說明：</h4>
-              <li>買進價格(千元)、賣出價格(千元)請輸入數字</li>
-              <li>
-                <b>輸入60 即為 6萬新台幣</b>
-              </li>
-              <li>輸入後自動換算手續費及淨賺</li>
+            <div className="alert alert-warning">
+              <h4>注意事項：</h4>
+              <li>股票以張數為單位</li>
+              <li>輸入60 即為 6萬新台幣</li>
+              <li>目前手續費以亞東「隔日買賣手續費」計算</li>
+              <h4 style={{ color: "red", marginTop: "20px" }}>
+                此網站僅提供使用者方便計算手續費，不負責任何產生的財務問題！
+              </h4>
             </div>
           </div>
         );
