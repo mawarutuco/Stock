@@ -55,9 +55,12 @@
         const [buyPrice, setBuyPrice] = useState("");
         const [sellPrice, setSellPrice] = useState("");
         const [percent, setPercent] = useState(2);
-        const [show, setShow] = useState(false);
+        const [showPercentChange, setShowPercentChange] = useState(false);
+        const [showYearEarn, setShowYearEarn] = useState(false);
         const [sellFee, setSellFee] = useState(sellFees[賣預設值]);
         const [stockOption, setStockOption] = useState(stockOptions[賣預設值]);
+        const [配股, set配股] = useState("");
+        const [配息, set配息] = useState("");
 
         useEffect(() => {
           if (stockOption === stockOptions[1]) setSellFee(sellFees[1]);
@@ -71,16 +74,21 @@
         const totalFee = buyFeeResult + sellFeeResult;
         const spread = sellThousand - buyThousand;
         const earn = spread - totalFee;
+
         const buy2percent = buyThousand * (1 + percent / 100);
         const buy2percentEarn =
           buyThousand * (percent / 100) -
           buyFeeResult -
           Math.round(buy2percent * sellFee);
 
+        const 年度可拿多少 = Math.round(
+          buyThousand * (配股 / 10) + 配息 * 1000
+        );
+        const 趴數 = (年度可拿多少 / buyThousand).toFixed(4);
+
         const reset = () => {
           setBuyPrice("");
           setSellPrice("");
-          setQuantity(1);
         };
 
         return (
@@ -109,20 +117,23 @@
             />
             {sellPrice ? <h1>賣出手續費：{sellFeeResult}元</h1> : ""}
 
-            {sellPrice && buyPrice ? <hr /> : <br />}
+            {sellPrice && buyPrice ? <hr /> : ""}
             {sellPrice && buyPrice ? <h1>總手續費：{totalFee}元</h1> : ""}
             {sellPrice ? <h1>淨賺：{earn}元</h1> : ""}
-            <div className="d-flex justify-content-center align-items-center m-3">
-              <MyBtn
-                text="買進價格、賣出價格欄位清空"
-                doClick={reset}
-                btnClass="btn-danger"
-              />
-            </div>
+
             <hr />
 
-            <MySwitch text="換算%數" doChange={() => setShow((pre) => !pre)} />
-            {show && (
+            <div className="d-flex justify-content-around align-items-center flex-wrap">
+              <MySwitch
+                text="換算%數"
+                doChange={() => setShowPercentChange((pre) => !pre)}
+              />
+              <MySwitch
+                text="換算年利率"
+                doChange={() => setShowYearEarn((pre) => !pre)}
+              />
+            </div>
+            {showPercentChange && (
               <div>
                 <MyInputGroup
                   reverse={true}
@@ -130,12 +141,51 @@
                   inputValue={percent}
                   onChangeEvent={(e) => setPercent(e.target.value)}
                 />
-                <h1>
-                  買進價格{percent}%的賣點：{(buy2percent / 1000).toFixed(2)}
-                </h1>
-                <h1>賣掉淨賺：{buy2percentEarn}</h1>
+                {buyPrice && (
+                  <div>
+                    <h1>
+                      買進價格{percent}%的賣點：
+                      {(buy2percent / 1000).toFixed(2)}
+                    </h1>
+                    <h1>賣掉淨賺：{buy2percentEarn}</h1>
+                  </div>
+                )}
+                <h4 className="alert alert-warning">以「買進價格」去計算</h4>
+                <hr />
               </div>
             )}
+            {showYearEarn && (
+              <div>
+                <MyInputGroup
+                  text="盈餘配股"
+                  inputValue={配股}
+                  onChangeEvent={(e) => set配股(e.target.value)}
+                />
+                <MyInputGroup
+                  text="現金股利(千元)"
+                  inputValue={配息}
+                  onChangeEvent={(e) => set配息(e.target.value)}
+                />
+                {配股 || 配息 ? (
+                  <div>
+                    <h1>年度可拿多少：{年度可拿多少}</h1> <h1>趴數：{趴數}</h1>
+                  </div>
+                ) : (
+                  ""
+                )}
+                <h4 className="alert alert-warning">
+                  以「買進價格」去計算配股配息
+                </h4>
+                <hr />
+              </div>
+            )}
+            <div className="d-flex justify-content-around align-items-center">
+              <MyBtn
+                text="清空買進價格、賣出價格"
+                doClick={reset}
+                btnClass="btn-danger mt-3"
+              />
+            </div>
 
             <hr />
             <div className="alert alert-warning">
@@ -152,7 +202,7 @@
 
       const MySwitch = ({ text, doChange }) => {
         return (
-          <h1 class="form-check form-switch">
+          <h3 class="form-check form-switch">
             <input
               class="form-check-input"
               type="checkbox"
@@ -162,7 +212,7 @@
             <label class="form-check-label" for={text}>
               {text}
             </label>
-          </h1>
+          </h3>
         );
       };
 
