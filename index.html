@@ -84,11 +84,13 @@
         const 年度可拿多少 = Math.round(
           buyThousand * (配股 / 10) + 配息 * 1000
         );
-        const 趴數 = (年度可拿多少 / buyThousand).toFixed(4);
+        const 趴數 = ((年度可拿多少 / buyThousand) * 100).toFixed(2) + "%";
 
         const reset = () => {
           setBuyPrice("");
           setSellPrice("");
+          set配股("");
+          set配息("");
         };
 
         return (
@@ -173,15 +175,16 @@
                 ) : (
                   ""
                 )}
-                <h4 className="alert alert-warning">
-                  以「買進價格」去計算配股配息
-                </h4>
+                <div className="alert alert-warning">
+                  <h4>以「買進價格」去計算</h4>
+                  <h4>盤面上配股或配息，假設顯示0.87，直接輸入即可</h4>
+                </div>
                 <hr />
               </div>
             )}
             <div className="d-flex justify-content-around align-items-center">
               <MyBtn
-                text="清空買進價格、賣出價格"
+                text="清空所有欄位"
                 doClick={reset}
                 btnClass="btn-danger mt-3"
               />
