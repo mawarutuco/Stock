@@ -1,4 +1,4 @@
-# 計算手續費、年利率等資訊
+# 計算手續費、殖利率等資訊
 https://mawarutuco.github.io/Stock/
 
 當日買賣手續費
