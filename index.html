@@ -55,8 +55,6 @@
         const [buyPrice, setBuyPrice] = useState("");
         const [sellPrice, setSellPrice] = useState("");
         const [percent, setPercent] = useState(2);
-        const [showPercentChange, setShowPercentChange] = useState(false);
-        const [showYearEarn, setShowYearEarn] = useState(false);
         const [sellFee, setSellFee] = useState(sellFees[賣預設值]);
         const [stockOption, setStockOption] = useState(stockOptions[賣預設值]);
         const [配股, set配股] = useState("");
@@ -129,59 +127,60 @@
               <MySwitch
                 text="換算%數"
                 doChange={() => setShowPercentChange((pre) => !pre)}
+                openId="showPercentChange"
               />
               <MySwitch
                 text="換算年利率"
                 doChange={() => setShowYearEarn((pre) => !pre)}
+                openId="showYearEarn"
               />
             </div>
-            {showPercentChange && (
-              <div>
-                <MyInputGroup
-                  reverse={true}
-                  text="%"
-                  inputValue={percent}
-                  onChangeEvent={(e) => setPercent(e.target.value)}
-                />
-                {buyPrice && (
-                  <div>
-                    <h1>
-                      買進價格{percent}%的賣點：
-                      {(buy2percent / 1000).toFixed(2)}
-                    </h1>
-                    <h1>賣掉淨賺：{buy2percentEarn}</h1>
-                  </div>
-                )}
-                <h4 className="alert alert-warning">以「買進價格」去計算</h4>
-                <hr />
-              </div>
-            )}
-            {showYearEarn && (
-              <div>
-                <MyInputGroup
-                  text="盈餘配股"
-                  inputValue={配股}
-                  onChangeEvent={(e) => set配股(e.target.value)}
-                />
-                <MyInputGroup
-                  text="現金股利(千元)"
-                  inputValue={配息}
-                  onChangeEvent={(e) => set配息(e.target.value)}
-                />
-                {配股 || 配息 ? (
-                  <div>
-                    <h1>年度可拿多少：{年度可拿多少}</h1> <h1>趴數：{趴數}</h1>
-                  </div>
-                ) : (
-                  ""
-                )}
-                <div className="alert alert-warning">
-                  <h4>以「買進價格」去計算</h4>
-                  <h4>盤面上配股或配息，假設顯示0.87，直接輸入即可</h4>
+
+            <div id="showPercentChange" class="collapse">
+              <MyInputGroup
+                reverse={true}
+                text="%"
+                inputValue={percent}
+                onChangeEvent={(e) => setPercent(e.target.value)}
+              />
+              {buyPrice && (
+                <div>
+                  <h1>
+                    買進價格{percent}%的賣點：
+                    {(buy2percent / 1000).toFixed(2)}
+                  </h1>
+                  <h1>賣掉淨賺：{buy2percentEarn}</h1>
                 </div>
-                <hr />
+              )}
+              <h4 className="alert alert-warning">以「買進價格」去計算</h4>
+              <hr />
+            </div>
+
+            <div id="showYearEarn" class="collapse">
+              <MyInputGroup
+                text="盈餘配股"
+                inputValue={配股}
+                onChangeEvent={(e) => set配股(e.target.value)}
+              />
+              <MyInputGroup
+                text="現金股利(千元)"
+                inputValue={配息}
+                onChangeEvent={(e) => set配息(e.target.value)}
+              />
+              {配股 || 配息 ? (
+                <div>
+                  <h1>年度可拿多少：{年度可拿多少}</h1> <h1>趴數：{趴數}</h1>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="alert alert-warning">
+                <h4>以「買進價格」去計算</h4>
+                <h4>盤面上配股或配息，假設顯示0.87，直接輸入即可</h4>
               </div>
-            )}
+              <hr />
+            </div>
+
             <div className="d-flex justify-content-around align-items-center">
               <MyBtn
                 text="清空所有欄位"
@@ -203,7 +202,7 @@
         );
       }
 
-      const MySwitch = ({ text, doChange }) => {
+      const MySwitch = ({ text, doChange, openId }) => {
         return (
           <h3 class="form-check form-switch">
             <input
@@ -211,6 +210,8 @@
               type="checkbox"
               id={text}
               onChange={doChange}
+              data-bs-toggle="collapse"
+              data-bs-target={"#" + openId}
             />
             <label class="form-check-label" for={text}>
               {text}
