@@ -79,9 +79,9 @@
           buyFeeResult -
           Math.round(buy2percent * sellFee);
 
-        const 年度可拿多少 = Math.round(
-          buyThousand * (配股 / 10) + 配息 * 1000
-        );
+        const 配多少股 = Math.round(quantity * 配股 * 100);
+        const 配多少錢 = Math.round(quantity * 配息 * 1000);
+        const 年度可拿多少 = Math.round(buyPrice * 配多少股 + 配多少錢);
         const 趴數 = ((年度可拿多少 / buyThousand) * 100).toFixed(2) + "%";
 
         const reset = () => {
@@ -123,15 +123,9 @@
 
             <hr />
 
-            <div className="d-flex justify-content-around align-items-center flex-wrap">
-              <MySwitch
-                text="換算%數"
-                openId="showPercentChange"
-              />
-              <MySwitch
-                text="換算年利率"
-                openId="showYearEarn"
-              />
+            <div className="d-flex justify-content-around align-items-center flex-wrap my-3">
+              <MySwitch text="換算%數" openId="showPercentChange" />
+              <MySwitch text="計算年度可收" openId="showYearEarn" />
             </div>
 
             <div id="showPercentChange" class="collapse card p-3">
@@ -164,18 +158,19 @@
                 inputValue={配息}
                 onChangeEvent={(e) => set配息(e.target.value)}
               />
-              {配股 || 配息 ? (
+              {配股 && <h1>配多少股：{配多少股}</h1>}
+              {配息 && <h1>配多少錢：{配多少錢}</h1>}
+              {buyPrice && 配股 && (
                 <div>
-                  <h1>年度可拿多少：{年度可拿多少}</h1> <h1>趴數：{趴數}</h1>
+                  <h1>年度可拿大約多少錢：{年度可拿多少}</h1>
+                  <h1>趴數：{趴數}</h1>
                 </div>
-              ) : (
-                ""
               )}
+
               <div className="alert alert-warning">
                 <h4>以「買進價格」去計算</h4>
                 <h4>盤面上配股或配息，假設顯示0.87，直接輸入即可</h4>
               </div>
-              <hr />
             </div>
 
             <div className="d-flex justify-content-around align-items-center">
