@@ -126,17 +126,15 @@
             <div className="d-flex justify-content-around align-items-center flex-wrap">
               <MySwitch
                 text="換算%數"
-                doChange={() => setShowPercentChange((pre) => !pre)}
                 openId="showPercentChange"
               />
               <MySwitch
                 text="換算年利率"
-                doChange={() => setShowYearEarn((pre) => !pre)}
                 openId="showYearEarn"
               />
             </div>
 
-            <div id="showPercentChange" class="collapse">
+            <div id="showPercentChange" class="collapse card p-3">
               <MyInputGroup
                 reverse={true}
                 text="%"
@@ -153,10 +151,9 @@
                 </div>
               )}
               <h4 className="alert alert-warning">以「買進價格」去計算</h4>
-              <hr />
             </div>
 
-            <div id="showYearEarn" class="collapse">
+            <div id="showYearEarn" class="collapse card p-3">
               <MyInputGroup
                 text="盈餘配股"
                 inputValue={配股}
