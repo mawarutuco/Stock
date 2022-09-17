@@ -108,18 +108,18 @@
               inputValue={buyPrice}
               onChangeEvent={(e) => setBuyPrice(e.target.value)}
             />
-            {buyPrice ? <h1>買進手續費：{buyFeeResult}元</h1> : ""}
+            {buyPrice && <h1>買進手續費：{buyFeeResult}元</h1>}
 
             <MyInputGroup
               text="賣出價格(千元)"
               inputValue={sellPrice}
               onChangeEvent={(e) => setSellPrice(e.target.value)}
             />
-            {sellPrice ? <h1>賣出手續費：{sellFeeResult}元</h1> : ""}
+            {sellPrice && <h1>賣出手續費：{sellFeeResult}元</h1>}
 
-            {sellPrice && buyPrice ? <hr /> : ""}
-            {sellPrice && buyPrice ? <h1>總手續費：{totalFee}元</h1> : ""}
-            {sellPrice ? <h1>淨賺：{earn}元</h1> : ""}
+            {sellPrice && buyPrice && <hr />}
+            {sellPrice && buyPrice && <h1>總手續費：{totalFee}元</h1>}
+            {sellPrice && <h1>淨賺：{earn}元</h1>}
 
             <hr />
 
@@ -184,10 +184,10 @@
             <hr />
             <div className="alert alert-warning">
               <h4>注意事項：</h4>
-              <li>股票以張數為單位</li>
+              <li>請注意股票張數及單位</li>
               <li>輸入60 即為 6萬新台幣</li>
               <h4 className="warning_word">
-                此網站僅提供使用者方便計算手續費，不負責任何產生的財務問題！
+                此網站僅提供使用者方便計算手續費等，不負責任何產生的財務問題！
               </h4>
             </div>
           </div>
