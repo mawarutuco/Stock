@@ -37,6 +37,22 @@
         color: red;
         margin-top: 20px;
       }
+
+      .show_move_up {
+        animation: move_up 0.8s;
+      }
+
+      @keyframes move_up {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateY(0px);
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
@@ -92,7 +108,7 @@
         };
 
         return (
-          <div className="container pt-5">
+          <div className="container pt-5 show_move_up">
             <MyRadio
               radioArr={stockOptions}
               doClick={(e) => setStockOption(e.target.id)}
