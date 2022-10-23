@@ -38,6 +38,34 @@
         margin-top: 20px;
       }
 
+      .rotate_arrow_down {
+        animation: rotateDown 0.3s;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes rotateDown {
+        from {
+          transform: rotate(90deg);
+        }
+        to {
+          transform: rotate(180deg);
+        }
+      }
+
+      .rotate_arrow_up {
+        animation: rotateUp 0.3s;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes rotateUp {
+        from {
+          transform: rotate(180deg);
+        }
+        to {
+          transform: rotate(90deg);
+        }
+      }
+
       .show_move_up {
         animation: move_up 0.8s;
       }
@@ -139,9 +167,9 @@
 
             <hr />
 
-            <div className="d-flex justify-content-around align-items-center flex-wrap my-3">
-              <MySwitch text="換算%數" openId="showPercentChange" />
-              <MySwitch text="計算年度可收" openId="showYearEarn" />
+            <div className="d-flex flex-wrap my-3">
+              <MySwitch text="換算  %數" showDivId="showPercentChange" />
+              <MySwitch text="計算年度可收" showDivId="showYearEarn" />
             </div>
 
             <div id="showPercentChange" class="collapse card p-3">
@@ -210,21 +238,21 @@
         );
       }
 
-      const MySwitch = ({ text, doChange, openId }) => {
+      const MySwitch = ({ text, doClick, show, showDivId }) => {
+        const [showDiv, setShowDiv] = useState(false);
         return (
-          <h3 class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id={text}
-              onChange={doChange}
-              data-bs-toggle="collapse"
-              data-bs-target={"#" + openId}
-            />
-            <label class="form-check-label" for={text}>
-              {text}
-            </label>
-          </h3>
+          <button
+            className="btn btn-lg border btn-primary d-flex"
+            id={text}
+            data-bs-toggle="collapse"
+            data-bs-target={"#" + showDivId}
+            onClick={() => setShowDiv((pre) => !pre)}
+          >
+            <div className={showDiv ? "rotate_arrow_down" : "rotate_arrow_up"}>
+              ▲
+            </div>
+            <span> {text}</span>
+          </button>
         );
       };
 
