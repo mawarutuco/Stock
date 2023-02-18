@@ -125,8 +125,8 @@
 
         const 配多少股 = Math.round(quantity * 配股 * 100);
         const 配多少錢 = Math.round(quantity * 配息 * 1000);
-        const 年度可拿多少 = Math.round(buyPrice * 配多少股 + 配多少錢);
-        const 殖利率 = ((年度可拿多少 / buyThousand) * 100).toFixed(2) + "%";
+        const 配股配息可拿 = Math.round(buyPrice * 配多少股 + 配多少錢);
+        const 殖利率 = ((配股配息可拿 / buyThousand) * 100).toFixed(2) + "%";
 
         const reset = () => {
           setBuyPrice("");
@@ -168,27 +168,35 @@
             <hr />
 
             <div className="d-flex flex-wrap my-3">
-              <MySwitch text="換算  %數" showDivId="showPercentChange" btnClass="btn-primary"/>
-              <MySwitch text="計算殖利率" showDivId="showYearEarn" btnClass="btn-info"/>
+              <MySwitch
+                text="計算賣點"
+                showDivId="showPercentChange"
+                btnClass="btn-warning"
+              />
+              <MySwitch
+                text="計算殖利率"
+                showDivId="showYearEarn"
+                btnClass="btn-info"
+              />
             </div>
 
-            <div id="showPercentChange" class="collapse card p-3 bg-primary">
+            <div id="showPercentChange" class="collapse card p-3 bg-warning">
               <MyInputGroup
                 reverse={true}
                 text="%"
                 inputValue={percent}
                 onChangeEvent={(e) => setPercent(e.target.value)}
               />
-              {buyPrice && (
-                <div>
-                  <h1>
-                    買進價格{percent}%的賣點：
-                    {(buy2percent / 1000).toFixed(2)}
-                  </h1>
-                  <h1>賣掉淨賺：{buy2percentEarn}</h1>
-                </div>
-              )}
-              <h4 className="alert alert-warning">以「買進價格」去計算</h4>
+              <div>
+                <h1>
+                  買進價格{percent}%的賣點：
+                  {(buy2percent / 1000).toFixed(2)}
+                </h1>
+                <h1>賣掉淨賺：{buy2percentEarn}</h1>
+              </div>
+              <div className="alert alert-warning">
+                <li>股價以「買進價格」去計算</li>
+              </div>
             </div>
 
             <div id="showYearEarn" class="collapse card p-3 bg-info">
@@ -206,14 +214,16 @@
               {配息 && <h1>配多少錢：{配多少錢}</h1>}
               {buyPrice && (
                 <div>
-                  <h1>年度可拿大約多少錢：{年度可拿多少}</h1>
+                  <h1>配股配息大約可拿：{配股配息可拿}</h1>
                   <h1>殖利率：{殖利率}</h1>
                 </div>
               )}
 
               <div className="alert alert-warning">
-                <h4>以「買進價格」去計算</h4>
-                <h4>盤面上配股或配息，假設顯示0.87，直接輸入即可</h4>
+                <li>股價以「買進價格」去計算</li>
+                <li>
+                  請參考除權息配股、配息資訊，假設盈餘配股顯示0.1，請直接在盈餘配股欄位上輸入0.1
+                </li>
               </div>
             </div>
 
