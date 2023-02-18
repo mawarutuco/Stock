@@ -126,7 +126,7 @@
         const 配多少股 = Math.round(quantity * 配股 * 100);
         const 配多少錢 = Math.round(quantity * 配息 * 1000);
         const 年度可拿多少 = Math.round(buyPrice * 配多少股 + 配多少錢);
-        const 趴數 = ((年度可拿多少 / buyThousand) * 100).toFixed(2) + "%";
+        const 殖利率 = ((年度可拿多少 / buyThousand) * 100).toFixed(2) + "%";
 
         const reset = () => {
           setBuyPrice("");
@@ -168,11 +168,11 @@
             <hr />
 
             <div className="d-flex flex-wrap my-3">
-              <MySwitch text="換算  %數" showDivId="showPercentChange" />
-              <MySwitch text="計算年度可收" showDivId="showYearEarn" />
+              <MySwitch text="換算  %數" showDivId="showPercentChange" btnClass="btn-primary"/>
+              <MySwitch text="計算殖利率" showDivId="showYearEarn" btnClass="btn-info"/>
             </div>
 
-            <div id="showPercentChange" class="collapse card p-3">
+            <div id="showPercentChange" class="collapse card p-3 bg-primary">
               <MyInputGroup
                 reverse={true}
                 text="%"
@@ -191,9 +191,9 @@
               <h4 className="alert alert-warning">以「買進價格」去計算</h4>
             </div>
 
-            <div id="showYearEarn" class="collapse card p-3">
+            <div id="showYearEarn" class="collapse card p-3 bg-info">
               <MyInputGroup
-                text="盈餘配股"
+                text="盈餘配股(*100股)"
                 inputValue={配股}
                 onChangeEvent={(e) => set配股(e.target.value)}
               />
@@ -204,10 +204,10 @@
               />
               {配股 && <h1>配多少股：{配多少股}</h1>}
               {配息 && <h1>配多少錢：{配多少錢}</h1>}
-              {buyPrice && 配股 && (
+              {buyPrice && (
                 <div>
                   <h1>年度可拿大約多少錢：{年度可拿多少}</h1>
-                  <h1>趴數：{趴數}</h1>
+                  <h1>殖利率：{殖利率}</h1>
                 </div>
               )}
 
@@ -238,11 +238,11 @@
         );
       }
 
-      const MySwitch = ({ text, doClick, show, showDivId }) => {
+      const MySwitch = ({ text, doClick, show, showDivId, btnClass }) => {
         const [showDiv, setShowDiv] = useState(false);
         return (
           <button
-            className="btn btn-lg border btn-primary d-flex"
+            className={"btn btn-lg border d-flex " + btnClass}
             id={text}
             data-bs-toggle="collapse"
             data-bs-target={"#" + showDivId}
